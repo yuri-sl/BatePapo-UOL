@@ -1,4 +1,4 @@
-package bate.papo.uol.DTO;
+package bate.papo.uol.DTO.Response;
 
 
 import jakarta.enterprise.context.ApplicationScoped;

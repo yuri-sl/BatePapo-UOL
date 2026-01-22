@@ -1,4 +1,4 @@
-package bate.papo.uol.DTO;
+package bate.papo.uol.DTO.Request;
 
 
 import lombok.AllArgsConstructor;

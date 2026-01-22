@@ -1,23 +1,27 @@
 package bate.papo.uol.service;
 
 
-import bate.papo.uol.DTO.CreateNewParticipantDTORequest;
-import bate.papo.uol.DTO.CreateNewParticipantDTOResponse;
+import bate.papo.uol.DTO.Request.CreateNewParticipantDTORequest;
+import bate.papo.uol.DTO.Request.SendMessageParticipantDTO;
+import bate.papo.uol.DTO.Response.CreateNewParticipantDTOResponse;
 import bate.papo.uol.entidade.Participant;
+import bate.papo.uol.repository.MessageRepository;
 import bate.papo.uol.repository.ParticipantRepository;
-import io.smallrye.config.ConfigValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.BadRequestException;
 import lombok.AllArgsConstructor;
-import org.jboss.resteasy.reactive.RestResponse;
+import org.apache.kafka.common.utils.Time;
 
-import java.util.ConcurrentModificationException;
+import java.time.LocalTime;
 import java.util.List;
 
 @AllArgsConstructor
 @ApplicationScoped
 public class ParticipantService {
     final ParticipantRepository participantRepository;
+    final MessageRepository messageRepository;
+
     private final CreateNewParticipantDTOResponse createNewParticipantDTOResponse;
 
     public void validateFieldsCreateNewParticipant(CreateNewParticipantDTORequest createNewParticipantDTORequest){
@@ -28,6 +32,23 @@ public class ParticipantService {
         if(!listaParticipantesEncontrados.isEmpty())
             throw new IllegalStateException("usuário já existe");
     }
+
+
+    @Transactional
+    public void saveRegisterParticipant(CreateNewParticipantDTORequest createNewParticipantDTORequest){
+        String participantName = createNewParticipantDTORequest.getName();
+
+        SendMessageParticipantDTO sendMessageParticipantDTO = SendMessageParticipantDTO.builder()
+                .from(participantName)
+                .to("Todos")
+                .text("entra na sala...")
+                .type("status")
+                .time(LocalTime.now())
+                .build();
+        messageRepository.saveMessageDTOtoDB(sendMessageParticipantDTO);
+    }
+
+    @Transactional
     public CreateNewParticipantDTOResponse criarNovoParticipante(CreateNewParticipantDTORequest createNewParticipantDTORequest){
         validateFieldsCreateNewParticipant(createNewParticipantDTORequest);
 
@@ -38,13 +59,19 @@ public class ParticipantService {
                 .name(participantName)
                 .lastStatus(participantLastStatus)
                 .build();
-        participantRepository.persist(participant1);
-        participantRepository.flush();
+        participantRepository.addParticipant(participant1);
+
+        saveRegisterParticipant(createNewParticipantDTORequest);
+
         return CreateNewParticipantDTOResponse.builder()
                 .name(participant1.getName())
                 .lastStatus(participant1.getLastStatus())
                 .build();
 
+    }
+
+    public List<Participant> findAllParticipantEntries(){
+        return this.participantRepository.findAllParticipants();
     }
 
 

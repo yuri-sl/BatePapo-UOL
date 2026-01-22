@@ -1,23 +1,32 @@
 package bate.papo.uol.entidade;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.apache.kafka.common.utils.Time;
 
+import java.time.LocalTime;
+
+
+@ApplicationScoped
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long message_id;
-    @Column(nullable = false)
+    @Column(name = "\"from\"", nullable = false)
     private String from;
-    @Column(nullable = false)
+    @Column(name = "\"to\"",nullable = false)
     private String to;
-    @Column(nullable = false)
+    @Column(name = "\"text\"",nullable = false)
     private String text;
-    @Column(nullable = false)
+    @Column(name = "\"type\"",nullable = false)
     private String type;
-    @Column(nullable = false)
-    private Time time;
+    @Column(name = "\"time\"",nullable = false)
+    private LocalTime time;
 }

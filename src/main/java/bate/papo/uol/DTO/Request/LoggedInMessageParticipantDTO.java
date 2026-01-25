@@ -12,7 +12,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Builder
 @Data
-public class SendMessageParticipantDTO {
+public class LoggedInMessageParticipantDTO {
     private String from;
     private String to;
     private String text;

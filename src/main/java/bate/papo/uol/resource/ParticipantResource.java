@@ -1,7 +1,6 @@
 package bate.papo.uol.resource;
 
 import bate.papo.uol.DTO.Request.CreateNewParticipantDTORequest;
-import bate.papo.uol.DTO.Request.SendMessageParticipantDTO;
 import bate.papo.uol.DTO.Response.CreateNewParticipantDTOResponse;
 import bate.papo.uol.entidade.Participant;
 import bate.papo.uol.repository.ParticipantRepository;

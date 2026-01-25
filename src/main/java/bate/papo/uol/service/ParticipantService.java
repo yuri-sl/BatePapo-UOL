@@ -2,7 +2,7 @@ package bate.papo.uol.service;
 
 
 import bate.papo.uol.DTO.Request.CreateNewParticipantDTORequest;
-import bate.papo.uol.DTO.Request.SendMessageParticipantDTO;
+import bate.papo.uol.DTO.Request.LoggedInMessageParticipantDTO;
 import bate.papo.uol.DTO.Response.CreateNewParticipantDTOResponse;
 import bate.papo.uol.entidade.Participant;
 import bate.papo.uol.repository.MessageRepository;
@@ -11,7 +11,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.BadRequestException;
 import lombok.AllArgsConstructor;
-import org.apache.kafka.common.utils.Time;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -38,14 +37,14 @@ public class ParticipantService {
     public void saveRegisterParticipant(CreateNewParticipantDTORequest createNewParticipantDTORequest){
         String participantName = createNewParticipantDTORequest.getName();
 
-        SendMessageParticipantDTO sendMessageParticipantDTO = SendMessageParticipantDTO.builder()
+        LoggedInMessageParticipantDTO loggedInMessageParticipantDTO = LoggedInMessageParticipantDTO.builder()
                 .from(participantName)
                 .to("Todos")
                 .text("entra na sala...")
                 .type("status")
                 .time(LocalTime.now())
                 .build();
-        messageRepository.saveMessageDTOtoDB(sendMessageParticipantDTO);
+        messageRepository.saveMessageDTOtoDB(loggedInMessageParticipantDTO);
     }
 
     @Transactional

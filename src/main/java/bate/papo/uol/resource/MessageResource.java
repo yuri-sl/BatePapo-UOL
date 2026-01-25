@@ -6,10 +6,8 @@ import bate.papo.uol.entidade.Participant;
 import bate.papo.uol.repository.MessageRepository;
 import bate.papo.uol.service.MessageService;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,14 +18,15 @@ import org.jboss.resteasy.reactive.RestResponse;
 @AllArgsConstructor
 @ApplicationScoped
 @Path("/messages")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class MessageResource {
     final MessageService messageService;
 
     @POST
     @Path("{User}")
-    public RestResponse<?> changeMessagesBetweenUsers(@PathParam("{User}") Participant User, SendMessagePeersDTO sendMessagePeersDTO){
+    public RestResponse<?> changeMessagesBetweenUsers(@PathParam("User") String username, SendMessagePeersDTO sendMessagePeersDTO){
         try{
-            String username = User.getName();
             messageService.addMessageToDB(sendMessagePeersDTO, username);
             return RestResponse.status(RestResponse.Status.ACCEPTED,"Mensagem enviada com sucesso");
         } catch (RuntimeException e) {

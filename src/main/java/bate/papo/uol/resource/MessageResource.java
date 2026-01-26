@@ -38,4 +38,15 @@ public class MessageResource {
             throw new RuntimeException(e);
         }
     }
+    /*
+    @GET
+    @Path("{User}")
+    public RestResponse<?> fetchAllViewableMessagesFromUser(@PathParam("User") String username){
+        try{
+
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    */
 }

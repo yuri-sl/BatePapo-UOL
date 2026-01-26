@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 
 @AllArgsConstructor
@@ -25,5 +26,18 @@ public class MessageRepository implements PanacheRepository<Message> {
                 .build();
         this.persist(message);
 
+    }
+
+    public List<Message> fetchAllMesagesToUserLimit(String username,int limit){
+        return find("(WHERE to = 'Todos'" +
+                " (OR from = ?1 OR to =?1 AND type = 'private_message')" +
+                " OR type = 'message' )" +
+                "AND type != 'status limit =?2",username,limit).stream().toList();
+    }
+    public List<Message> fetchAllMesagesToUser(String username){
+        return find("(WHERE to = 'Todos'" +
+                " (OR from = ?1 OR to =?1 AND type = 'private_message')" +
+                " OR type = 'message' )" +
+                "AND type != 'status",username).stream().toList();
     }
 }

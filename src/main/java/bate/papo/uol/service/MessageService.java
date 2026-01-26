@@ -67,5 +67,15 @@ public class MessageService {
 
 
     }
+    public List<Message> getALlMessagesFromUser(String username, int limit){
+        try{
+
+            List<Message> listaMensagens = messageRepository.fetchAllMesagesToUserLimit(username, limit);
+
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
 }

@@ -35,9 +35,12 @@ public class MessageRepository implements PanacheRepository<Message> {
                 "AND type != 'status limit =?2",username,limit).stream().toList();
     }
     public List<Message> fetchAllMesagesToUser(String username){
-        return find("(WHERE to = 'Todos'" +
-                " (OR from = ?1 OR to =?1 AND type = 'private_message')" +
-                " OR type = 'message' )" +
-                "AND type != 'status",username).stream().toList();
+        return find(
+                "WHERE to = 'Todos'" +
+                " OR from = ?1 " +
+                " OR (to =?1 AND type = 'private_message')" +
+                " AND type <> 'status'",
+
+                username).stream().toList();
     }
 }

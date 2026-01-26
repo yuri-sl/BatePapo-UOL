@@ -2,18 +2,22 @@ package bate.papo.uol.resource;
 
 
 import bate.papo.uol.DTO.Request.SendMessagePeersDTO;
+import bate.papo.uol.entidade.Message;
 import bate.papo.uol.entidade.Participant;
 import bate.papo.uol.repository.MessageRepository;
 import bate.papo.uol.service.MessageService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestResponse;
+
+import java.util.List;
 
 import static io.smallrye.config._private.ConfigLogging.log;
 
@@ -38,15 +42,16 @@ public class MessageResource {
             throw new RuntimeException(e);
         }
     }
-    /*
+
     @GET
     @Path("{User}")
     public RestResponse<?> fetchAllViewableMessagesFromUser(@PathParam("User") String username){
         try{
-
+            List<Message> listaMensagens = messageService.getAllMessagesFromUser(username);
+            return RestResponse.status(Response.Status.OK,listaMensagens);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     }
-    */
+
 }

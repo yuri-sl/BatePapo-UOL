@@ -69,13 +69,26 @@ public class MessageService {
     }
     public List<Message> getALlMessagesFromUser(String username, int limit){
         try{
-
             List<Message> listaMensagens = messageRepository.fetchAllMesagesToUserLimit(username, limit);
-
+            return listaMensagens;
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
+    };
+    public List<Message> getAllMessagesFromUser(String username){
+        try{
+            List<Participant> verificarUsuarioExiste = participantRepository.returnParticipantsWithSameName(username);
+            if(verificarUsuarioExiste.isEmpty())
+                throw new IllegalArgumentException("O usuário não existe no sistema");
 
-    }
+            List<Message> listaMensagens = messageRepository.fetchAllMesagesToUser(username);
+            for(Message m : listaMensagens){
+                log.info(m);
+            }
+            return listaMensagens;
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+    };
 
 }

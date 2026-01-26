@@ -18,6 +18,7 @@ import java.time.LocalTime;
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column()
     private long message_id;
     @Column(name = "\"from\"", nullable = false)
     private String from;

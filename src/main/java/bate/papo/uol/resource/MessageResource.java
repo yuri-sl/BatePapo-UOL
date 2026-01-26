@@ -30,7 +30,7 @@ public class MessageResource {
     public RestResponse<?> changeMessagesBetweenUsers(@PathParam("User") String username, SendMessagePeersDTO sendMessagePeersDTO){
         try{
             messageService.addMessageToDB(sendMessagePeersDTO, username);
-            return RestResponse.status(RestResponse.Status.ACCEPTED,"Mensagem enviada com sucesso");
+            return RestResponse.status(201,"Mensagem enviada com sucesso");
         } catch (IllegalArgumentException e){
             log.infof(e.getMessage());
             return RestResponse.status(422,e.getMessage());

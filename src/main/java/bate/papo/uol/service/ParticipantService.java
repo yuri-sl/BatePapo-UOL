@@ -72,6 +72,4 @@ public class ParticipantService {
     public List<Participant> findAllParticipantEntries(){
         return this.participantRepository.findAllParticipants();
     }
-
-
 }

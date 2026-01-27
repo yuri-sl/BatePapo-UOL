@@ -1,6 +1,7 @@
 package bate.papo.uol.repository;
 
 import bate.papo.uol.DTO.Request.CreateNewParticipantDTORequest;
+import bate.papo.uol.DTO.Request.UpdateParticipantDTO;
 import bate.papo.uol.entidade.Participant;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -22,6 +23,10 @@ public class ParticipantRepository implements PanacheRepository<Participant> {
     }
     public List<Participant> findAllParticipants(){
         return findAll().stream().toList();
+    }
+
+    public void updateParticipant(UpdateParticipantDTO dto){
+        update("name =?1, lastStatus =?2, where id=?3",dto.getName(),dto.getStatus(),dto.getId());
     }
 
 }

@@ -26,7 +26,7 @@ public class ParticipantRepository implements PanacheRepository<Participant> {
     }
 
     public void updateParticipant(UpdateParticipantDTO dto){
-        update("name =?1, lastStatus =?2, where id=?3",dto.getName(),dto.getStatus(),dto.getId());
+        update("set name =?1, lastStatus =?2 where id=?3",dto.getName(),dto.getStatus(),dto.getId());
     }
 
 }

@@ -45,9 +45,11 @@ public class MessageResource {
 
     @GET
     @Path("{User}")
-    public RestResponse<?> fetchAllViewableMessagesFromUser(@PathParam("User") String username){
+    public RestResponse<?> fetchAllViewableMessagesFromUser(@PathParam("User") String username, @QueryParam("limit") String limit){
         try{
-            List<Message> listaMensagens = messageService.getAllMessagesFromUser(username);
+            log.info("No endpoint de pegar as mensagens!");
+            log.infof(limit);
+            List<Message> listaMensagens = messageService.getAllMessagesFromUser(username, limit);
             return RestResponse.status(Response.Status.OK,listaMensagens);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);

@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.kafka.common.utils.Time;
 
@@ -15,6 +16,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Data
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

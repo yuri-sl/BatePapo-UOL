@@ -23,13 +23,13 @@ public class Message {
     @Column()
     private long message_id;
     @Column(name = "\"from\"", nullable = false)
-    private String from;
+    private String enviou;
     @Column(name = "\"to\"",nullable = false)
-    private String to;
+    private String recebeu;
     @Column(name = "\"text\"",nullable = false)
-    private String text;
+    private String texto;
     @Column(name = "\"type\"",nullable = false)
-    private String type;
+    private String tipo;
     @Column(name = "\"time\"",nullable = false)
-    private LocalTime time;
+    private LocalTime tempo;
 }

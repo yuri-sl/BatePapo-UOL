@@ -57,11 +57,11 @@ public class MessageService {
 
 
             Message message = Message.builder()
-                    .from(dataToDB.getFrom())
-                    .to(dataToDB.getTo())
-                    .text(dataToDB.getText())
-                    .type(dataToDB.getType())
-                    .time(horaAtual)
+                    .enviou(dataToDB.getFrom())
+                    .recebeu(dataToDB.getTo())
+                    .texto(dataToDB.getText())
+                    .tipo(dataToDB.getType())
+                    .tempo(horaAtual)
                     .build();
             messageRepository.persist(message);
 

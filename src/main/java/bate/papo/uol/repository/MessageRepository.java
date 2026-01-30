@@ -41,19 +41,21 @@ public class MessageRepository implements PanacheRepository<Message> {
     }
 
     public List<Message> fetchAllMesagesToUserLimit(String username,String limit){
-        int limitInt = Integer.parseInt(limit);
-        return find(
-                "WHERE (recebeu = 'Todos'" +
-                        " OR enviou = ?1 " +
-                        " OR recebeu = ?1)" +
-                        " LIMIT ?2"
-                ,username,limitInt).stream().toList();
+        try{
+            int limitInt = Integer.parseInt(limit);
+
+            if(limitInt <= 0)
+                throw new IllegalArgumentException("Valor não suportado para busca");
+            return find(
+                    "WHERE tipo <> 'private_message' OR (tipo = 'private_message' AND (recebeu = ?1 or enviou = ?1)) LIMIT ?2 "
+                    ,username,limitInt).stream().toList();
+        }catch (NumberFormatException e){
+            throw new NumberFormatException();
+        }
     }
     public List<Message> fetchAllMesagesToUser(String username){
         return find(
-                "WHERE (recebeu = 'Todos'" +
-                " OR enviou = ?1 " +
-                " OR recebeu = ?1)",
+                "WHERE tipo <> 'private_message' OR (tipo = 'private_message' AND (recebeu = ?1 or enviou = ?1))",
                 username).stream().toList();
     }
     /*

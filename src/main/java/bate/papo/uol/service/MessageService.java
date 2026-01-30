@@ -96,7 +96,10 @@ public class MessageService {
                 }
                 return listaMensagens;
             }
-        } catch (RuntimeException e) {
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("O limite passado não é numérico");
+        }
+        catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     };

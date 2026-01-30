@@ -51,7 +51,10 @@ public class MessageResource {
             log.infof(limit);
             List<Message> listaMensagens = messageService.getAllMessagesFromUser(username, limit);
             return RestResponse.status(Response.Status.OK,listaMensagens);
-        } catch (RuntimeException e) {
+        } catch (NumberFormatException e) {
+            return RestResponse.status(422, "O limite passado deve ser numérico");
+        }
+        catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     }

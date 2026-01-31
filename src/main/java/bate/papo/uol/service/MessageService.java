@@ -1,6 +1,7 @@
 package bate.papo.uol.service;
 
 
+import bate.papo.uol.DTO.Request.PutEditarMensagemDTO;
 import bate.papo.uol.DTO.Request.SendMessagePeersDTO;
 import bate.papo.uol.DTO.Request.SendMessagePeersWithFromDTO;
 import bate.papo.uol.entidade.Message;
@@ -10,9 +11,11 @@ import bate.papo.uol.repository.ParticipantRepository;
 import bate.papo.uol.util.enums.MessageTypes;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.Path;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import org.jboss.resteasy.reactive.RestResponse;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -103,18 +106,30 @@ public class MessageService {
             throw new RuntimeException(e);
         }
     };
+    public void verificarMensagemExisteEDonoLegitimo(Message mensagem,String username){
+        if(mensagem == null){
+            throw new RuntimeException("Mensagem não existe no sistema");
+        }
+        final String donoMensagem = mensagem.getEnviou();
+        if(!donoMensagem.equals(username)){
+            throw new RuntimeException("Você não é o dono da mensagem!");
+        }
+    }
 
     @Transactional
     public void deletarMensagemDadoIDUsuario(long id_mensagem, String username){
         Message mensagemBuscada = messageRepository.listarMensagemComID(id_mensagem);
-        if(mensagemBuscada == null){
-            throw new RuntimeException("Mensagem não existe no sistema");
-        }
-        final String donoMensagem = mensagemBuscada.getEnviou();
-        if(!donoMensagem.equals(username)){
-            throw new RuntimeException("Você não é o dono da mensagem!");
-        }
+        verificarMensagemExisteEDonoLegitimo(mensagemBuscada,username);
         messageRepository.deleteById(id_mensagem);
+    }
+
+    @Transactional
+    public void editarMensagemComID(long idMensagem, PutEditarMensagemDTO putEditarMensagemDTO,String username){
+        Message mensagemBuscada = messageRepository.listarMensagemComID(idMensagem);
+        verificarMensagemExisteEDonoLegitimo(mensagemBuscada,username);
+        mensagemBuscada.setTexto(putEditarMensagemDTO.getText());
+        mensagemBuscada.setTipo(putEditarMensagemDTO.getType());
+        mensagemBuscada.setRecebeu(putEditarMensagemDTO.getTo());
     }
 
 }

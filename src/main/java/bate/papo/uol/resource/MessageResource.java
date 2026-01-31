@@ -1,6 +1,7 @@
 package bate.papo.uol.resource;
 
 
+import bate.papo.uol.DTO.Request.PutEditarMensagemDTO;
 import bate.papo.uol.DTO.Request.SendMessagePeersDTO;
 import bate.papo.uol.entidade.Message;
 import bate.papo.uol.entidade.Participant;
@@ -71,5 +72,17 @@ public class MessageResource {
             return RestResponse.status(RestResponse.Status.NOT_FOUND,e.getMessage());
         }
     };
+    @PUT
+    @Path("/{ID_DA_MENSAGEM}")
+    public RestResponse<?> editarMensagemComID(@PathParam("ID_DA_MENSAGEM") long idMensagem,
+                                               @QueryParam("User") String username,
+                                               PutEditarMensagemDTO putEditarMensagemDTO){
+        try {
+            messageService.editarMensagemComID(idMensagem,putEditarMensagemDTO,username);
+            return RestResponse.status(RestResponse.Status.OK,"Mensagem no banco atualizada");
+        } catch (RuntimeException e) {
+            return RestResponse.status(404,e.getMessage());
+        }
+    }
 
 }

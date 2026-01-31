@@ -46,6 +46,23 @@ public class MessageService {
         if(verificarUsuarioExiste.isEmpty())
             throw new IllegalArgumentException("O usuário não existe no sistema");
     }
+    public void validarCamposEditarMensagemDTO(PutEditarMensagemDTO dados,String usernameSender){
+        if(dados.getText().isBlank() || dados.getTo().isBlank())
+            throw new IllegalArgumentException("Os campos de texto e destinatário não pode ser nulo");
+        String tipoMensagem = dados.getType();
+
+        MessageTypes tipo;
+        try{
+            tipo = MessageTypes.from(tipoMensagem);
+            log.infof(tipo.toString());
+        } catch (RuntimeException e) {
+            throw new IllegalArgumentException("Tipo inválido de mensagem");
+        }
+
+        List<Participant> verificarUsuarioExiste = participantRepository.returnParticipantsWithSameName(usernameSender);
+        if(verificarUsuarioExiste.isEmpty())
+            throw new IllegalArgumentException("O usuário não existe no sistema");
+    }
     @Transactional
     public void addMessageToDB(SendMessagePeersDTO sendMessagePeersDTO,String fromUser){
             SendMessagePeersWithFromDTO dataToDB = SendMessagePeersWithFromDTO.builder()
@@ -125,6 +142,7 @@ public class MessageService {
 
     @Transactional
     public void editarMensagemComID(long idMensagem, PutEditarMensagemDTO putEditarMensagemDTO,String username){
+        validarCamposEditarMensagemDTO(putEditarMensagemDTO,username);
         Message mensagemBuscada = messageRepository.listarMensagemComID(idMensagem);
         verificarMensagemExisteEDonoLegitimo(mensagemBuscada,username);
         mensagemBuscada.setTexto(putEditarMensagemDTO.getText());

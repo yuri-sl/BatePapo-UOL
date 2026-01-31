@@ -104,4 +104,17 @@ public class MessageService {
         }
     };
 
+    @Transactional
+    public void deletarMensagemDadoIDUsuario(long id_mensagem, String username){
+        Message mensagemBuscada = messageRepository.listarMensagemComID(id_mensagem);
+        if(mensagemBuscada == null){
+            throw new RuntimeException("Mensagem não existe no sistema");
+        }
+        final String donoMensagem = mensagemBuscada.getEnviou();
+        if(!donoMensagem.equals(username)){
+            throw new RuntimeException("Você não é o dono da mensagem!");
+        }
+        messageRepository.deleteById(id_mensagem);
+    }
+
 }

@@ -19,10 +19,14 @@ Preciso adicionar para que ele busque também todas as mensaens q tenam status d
 message
 AND
 
-A => Mensagens privadas (recebi ou enviei)
-B => Mensagens minhas ()
-C => Mensagens que enviei
+A => Mensagens privadas (recebi ou enviei) => type = private_message
+B => Mensagens minhas () => m.to = "Humberto"
+C => Mensagens que enviei => m.from = "Humberto"
 A AND (B OR C)
+
+D => Mensagens públicas (tipo <> private_message)
+
+D OR (A AND (B OR C))
  */
 @AllArgsConstructor
 @ApplicationScoped
@@ -58,16 +62,7 @@ public class MessageRepository implements PanacheRepository<Message> {
                 "WHERE tipo <> 'private_message' OR (tipo = 'private_message' AND (recebeu = ?1 or enviou = ?1))",
                 username).stream().toList();
     }
-    /*
-    public List<Message> fetchAllMessagesToUserLimit(String username,long limit_number){
-        return find(
-                "WHERE (to = 'Todos'"+
-                        "OR from =?1 "+
-                        "OR (to =?1 AND type = 'private_message'))"+
-                        "AND type <> 'status'"+
-                        "LIMIT =?2",
-                username,limit_number).stream().toList();
+    public Message listarMensagemComID(long idMensagem){
+        return find("WHERE message_id = ?1",idMensagem).firstResult();
     }
-
-     */
 }

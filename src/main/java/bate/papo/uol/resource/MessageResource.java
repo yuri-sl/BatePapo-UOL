@@ -59,4 +59,17 @@ public class MessageResource {
         }
     }
 
+    @DELETE
+    @Path("/{ID_DA_MENSAGEM}")
+    public RestResponse<?> deletarMensagemComId(@PathParam("ID_DA_MENSAGEM") long idMensagem,@QueryParam("User") String username){
+        try{
+            messageService.deletarMensagemDadoIDUsuario(idMensagem,username);
+            return RestResponse.status(RestResponse.Status.OK,"Mensagem deletada");
+        } catch (RuntimeException e) {
+            if(e.getMessage().equals("Você não é o dono da mensagem!"))
+                return RestResponse.status(401,e.getMessage());
+            return RestResponse.status(RestResponse.Status.NOT_FOUND,e.getMessage());
+        }
+    };
+
 }

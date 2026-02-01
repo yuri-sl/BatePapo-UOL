@@ -2,6 +2,7 @@ package bate.papo.uol.resource;
 
 
 import bate.papo.uol.service.StatusService;
+import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;

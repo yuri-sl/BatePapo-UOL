@@ -77,11 +77,11 @@ public class MessageService {
 
 
             Message message = Message.builder()
-                    .enviou(dataToDB.getFrom())
-                    .recebeu(dataToDB.getTo())
-                    .texto(dataToDB.getText())
-                    .tipo(dataToDB.getType())
-                    .tempo(horaAtual)
+                    .from(dataToDB.getFrom())
+                    .to(dataToDB.getTo())
+                    .text(dataToDB.getText())
+                    .type(dataToDB.getType())
+                    .time(horaAtual)
                     .build();
             messageRepository.persist(message);
 
@@ -127,7 +127,7 @@ public class MessageService {
         if(mensagem == null){
             throw new RuntimeException("Mensagem não existe no sistema");
         }
-        final String donoMensagem = mensagem.getEnviou();
+        final String donoMensagem = mensagem.getFrom();
         if(!donoMensagem.equals(username)){
             throw new RuntimeException("Você não é o dono da mensagem!");
         }
@@ -145,9 +145,9 @@ public class MessageService {
         validarCamposEditarMensagemDTO(putEditarMensagemDTO,username);
         Message mensagemBuscada = messageRepository.listarMensagemComID(idMensagem);
         verificarMensagemExisteEDonoLegitimo(mensagemBuscada,username);
-        mensagemBuscada.setTexto(putEditarMensagemDTO.getText());
-        mensagemBuscada.setTipo(putEditarMensagemDTO.getType());
-        mensagemBuscada.setRecebeu(putEditarMensagemDTO.getTo());
+        mensagemBuscada.setText(putEditarMensagemDTO.getText());
+        mensagemBuscada.setType(putEditarMensagemDTO.getType());
+        mensagemBuscada.setTo(putEditarMensagemDTO.getTo());
     }
 
 }

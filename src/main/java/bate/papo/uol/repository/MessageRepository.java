@@ -25,7 +25,7 @@ B => Mensagens minhas () => m.to = "Humberto"
 C => Mensagens que enviei => m.from = "Humberto"
 A AND (B OR C)
 
-D => Mensagens públicas (tipo <> private_message)
+D => Mensagens públicas (type <> private_message)
 
 D OR (A AND (B OR C))
  */
@@ -35,11 +35,11 @@ public class MessageRepository implements PanacheRepository<Message> {
 
     public void saveMessageDTOtoDB(LoggedInMessageParticipantDTO loggedInMessageParticipantDTO){
         Message message = Message.builder()
-                .enviou(loggedInMessageParticipantDTO.getFrom())
-                .recebeu(loggedInMessageParticipantDTO.getTo())
-                .texto(loggedInMessageParticipantDTO.getText())
-                .tipo(loggedInMessageParticipantDTO.getType())
-                .tempo(loggedInMessageParticipantDTO.getTime())
+                .from(loggedInMessageParticipantDTO.getFrom())
+                .to(loggedInMessageParticipantDTO.getTo())
+                .text(loggedInMessageParticipantDTO.getText())
+                .type(loggedInMessageParticipantDTO.getType())
+                .time(loggedInMessageParticipantDTO.getTime())
                 .build();
         this.persist(message);
 
@@ -52,7 +52,7 @@ public class MessageRepository implements PanacheRepository<Message> {
             if(limitInt <= 0)
                 throw new IllegalArgumentException("Valor não suportado para busca");
             return find(
-                    "WHERE tipo <> 'private_message' OR (tipo = 'private_message' AND (recebeu = ?1 or enviou = ?1)) LIMIT ?2 "
+                    "WHERE type <> 'private_message' OR (type = 'private_message' AND (to = ?1 or from = ?1)) LIMIT ?2 "
                     ,username,limitInt).stream().toList();
         }catch (NumberFormatException e){
             throw new NumberFormatException();
@@ -60,7 +60,7 @@ public class MessageRepository implements PanacheRepository<Message> {
     }
     public List<Message> fetchAllMesagesToUser(String username){
         return find(
-                "WHERE tipo <> 'private_message' OR (tipo = 'private_message' AND (recebeu = ?1 or enviou = ?1))",
+                "WHERE type <> 'private_message' OR (type = 'private_message' AND (to = ?1 or from = ?1))",
                 username).stream().toList();
     }
     public Message listarMensagemComID(long idMensagem){

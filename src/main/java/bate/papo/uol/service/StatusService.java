@@ -29,6 +29,7 @@ public class StatusService {
         if(listaUsuarios.isEmpty())
             throw new IllegalArgumentException("Não encontrado usuário com este nome");
     }
+    @Scheduled(every = "15s")
     @Transactional
     public void removerInativos(){
         List <Participant> listaParticipantes = participantRepository.findAllParticipants();

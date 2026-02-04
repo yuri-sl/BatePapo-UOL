@@ -4,6 +4,7 @@ package bate.papo.uol.resource;
 import bate.papo.uol.service.StatusService;
 import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -17,9 +18,8 @@ import org.jboss.resteasy.reactive.RestResponse;
 public class StatusResource {
     final StatusService statusService;
 
-    @Path("{user_name}")
     @POST
-    public RestResponse<?> updateHealthTime(@PathParam("user_name") String username){
+    public RestResponse<?> updateHealthTime(@HeaderParam("User") String username){
         try{
             statusService.updateParticipant(username);
             return RestResponse.status(RestResponse.Status.OK,"Usuário editado com sucesso");

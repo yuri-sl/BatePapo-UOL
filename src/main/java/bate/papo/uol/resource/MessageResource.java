@@ -31,8 +31,7 @@ public class MessageResource {
     final MessageService messageService;
 
     @POST
-    @Path("{User}")
-    public RestResponse<?> changeMessagesBetweenUsers(@PathParam("User") String username, SendMessagePeersDTO sendMessagePeersDTO){
+    public RestResponse<?> changeMessagesBetweenUsers(@HeaderParam("User") String username, SendMessagePeersDTO sendMessagePeersDTO){
         try{
             messageService.addMessageToDB(sendMessagePeersDTO, username);
             return RestResponse.status(201,"Mensagem enviada com sucesso");
@@ -45,8 +44,7 @@ public class MessageResource {
     }
 
     @GET
-    @Path("{User}")
-    public RestResponse<?> fetchAllViewableMessagesFromUser(@PathParam("User") String username, @QueryParam("limit") String limit){
+    public RestResponse<?> fetchAllViewableMessagesFromUser(@HeaderParam("User") String username, @QueryParam("limit") String limit){
         try{
             log.info("No endpoint de pegar as mensagens!");
             log.infof(limit);
@@ -61,8 +59,7 @@ public class MessageResource {
     }
 
     @DELETE
-    @Path("/{ID_DA_MENSAGEM}")
-    public RestResponse<?> deletarMensagemComId(@PathParam("ID_DA_MENSAGEM") long idMensagem,@QueryParam("User") String username){
+    public RestResponse<?> deletarMensagemComId(@HeaderParam("ID_DA_MENSAGEM") long idMensagem,@QueryParam("User") String username){
         try{
             messageService.deletarMensagemDadoIDUsuario(idMensagem,username);
             return RestResponse.status(RestResponse.Status.OK,"Mensagem deletada");
@@ -73,8 +70,7 @@ public class MessageResource {
         }
     };
     @PUT
-    @Path("/{ID_DA_MENSAGEM}")
-    public RestResponse<?> editarMensagemComID(@PathParam("ID_DA_MENSAGEM") long idMensagem,
+    public RestResponse<?> editarMensagemComID(@HeaderParam("ID_DA_MENSAGEM") long idMensagem,
                                                @QueryParam("User") String username,
                                                PutEditarMensagemDTO putEditarMensagemDTO){
         try {
